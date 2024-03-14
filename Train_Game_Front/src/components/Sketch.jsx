@@ -13,8 +13,6 @@ const Sketch = () => {
   let y = (sketchH / 2) - (pointSize / 2);
   let y2 = (sketchH / 2) - (pointSize / 2);
   let edgeTrain = sketchW - 200;
-  console.log("edge ", edgeTrain)
-  // const [falling, setFalling] = useState(false);
   var falling = false;
   var win = false;
   
@@ -43,12 +41,12 @@ const Sketch = () => {
         p.line(0, y + 10, edgeTrain, y + 10);
         
         p.drawingContext.setLineDash([20, 0]); // set line dash pattern
-        let trainLight = x + 400;
+        let trainLight = x + 200;
+        p.line(x + pointSize , y, trainLight, y - pointSize * 0.8);
+        p.line(x + pointSize , y, trainLight, y - pointSize * 1.4);
         p.line(x + pointSize , y, trainLight, y - pointSize * 2);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 3);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 4);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 5);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 6);
+        p.line(x + pointSize , y, trainLight, y - pointSize * 2.6);
+        p.line(x + pointSize , y, trainLight, y - pointSize * 3.2);
 
         if (x >= 980 && edgeTrain === 1000) {
           falling = true;
@@ -59,7 +57,7 @@ const Sketch = () => {
           p.background(0);
           p.fill(111);
           p.textSize(50);
-          p.text('Game Over', sketchW / 2 - 100, sketchH / 2);
+          p.text('Game Overrrr', sketchW / 2 - 100, sketchH / 2);
         } if (win) {
           p.background(0);
           p.fill(111);
