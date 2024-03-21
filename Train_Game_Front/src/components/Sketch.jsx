@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import p5 from 'p5';
+import { useSocket } from '../SocketContext';
 
 const Sketch = () => {
   const sketchH = 600;
@@ -13,15 +14,31 @@ const Sketch = () => {
   let y = (sketchH / 2) - (pointSize / 2);
   let y2 = (sketchH / 2) - (pointSize / 2);
   let edgeTrain = sketchW - 200;
-  var falling = false;
-  var win = false;
-  
+  let falling = false;
+  let win = false;
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('moved', (newX) => {
+      console.log('Received new X position:', newX);
+      x = newX;
+      console.log('New X position:', x);
+    });
+    return () => {
+      socket.off('moved');
+    };
+  }, [socket]);
+
+
+
   useEffect(() => {
     const sketch = new p5((p) => {
       p.setup = () => {
         canvas = p.createCanvas(sketchW, sketchH).style('border', '1px solid #fff');
       };
-      
+
       p.draw = () => {
         p.background(0);
         p.rect(x, y2 - pointSize / 2, pointSize, pointSize);
@@ -32,21 +49,20 @@ const Sketch = () => {
         p.rect(x - pointSize * 5 - 100, y2 - pointSize / 2, pointSize, pointSize);
         p.rect(x - pointSize * 6 - 120, y2 - pointSize / 2, pointSize, pointSize);
         p.rect(x - pointSize * 7 - 140, y2 - pointSize / 2, pointSize, pointSize);
-        pointSize
-        // Draw dashed line after the point
+
         p.stroke(111);
         p.strokeWeight(2);
         p.strokeCap(p.SQUARE);
-        p.drawingContext.setLineDash([20, 20]); // set line dash pattern
+        p.drawingContext.setLineDash([20, 20]);
         p.line(0, y + 10, edgeTrain, y + 10);
-        
-        p.drawingContext.setLineDash([20, 0]); // set line dash pattern
+
+        p.drawingContext.setLineDash([20, 0]);
         let trainLight = x + 200;
-        p.line(x + pointSize , y, trainLight, y - pointSize * 0.8);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 1.4);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 2);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 2.6);
-        p.line(x + pointSize , y, trainLight, y - pointSize * 3.2);
+        p.line(x + pointSize, y, trainLight, y - pointSize * 0.8);
+        p.line(x + pointSize, y, trainLight, y - pointSize * 1.4);
+        p.line(x + pointSize, y, trainLight, y - pointSize * 2);
+        p.line(x + pointSize, y, trainLight, y - pointSize * 2.6);
+        p.line(x + pointSize, y, trainLight, y - pointSize * 3.2);
 
         if (x >= 980 && edgeTrain === 1000) {
           falling = true;
@@ -68,7 +84,7 @@ const Sketch = () => {
         if (y > sketchH) {
           x = (sketchW / 2) - (pointSize / 2);
           y = (sketchH / 2) - (pointSize / 2);
-          setFalling(false);
+          falling = false;
         }
       };
     }, sketchRef.current);
@@ -79,15 +95,19 @@ const Sketch = () => {
     };
   }, []);
 
+
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === 'ArrowLeft') {
-        x = Math.max(x - moveAmount, pointSize / 2);
-      } else if (event.key === 'ArrowRight') {
-        x = Math.min(x + moveAmount, sketchW - pointSize);
-        if (x == sketchW - pointSize) {
+      if (event.key === 'ArrowRight') {
+        const newX = Math.min(x + moveAmount, sketchW - pointSize);
+        if (newX == sketchW - pointSize) {
           win = true;
+          if (socket) socket.emit('win');
         }
+        if (socket) {
+          socket.emit('move', newX);
+        }
+        x = newX;
       } else if (event.key === 'ArrowUp' && edgeTrain < 1200) {
         edgeTrain += 200;
       } else if (event.key === 'ArrowDown' && edgeTrain > 1000) {
@@ -100,7 +120,7 @@ const Sketch = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [x, y]);
+  }, [x, y, socket]);
 
   return <div className='sketch' ref={sketchRef}></div>;
 };
