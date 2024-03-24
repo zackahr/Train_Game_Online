@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { useSocket } from '../SocketContext';
+import game from '../assets/Trains/game.png';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -49,6 +50,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
+        <img className='game-img' src={game} alt="" />
         <h2 className="login-header">Log into Game</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">

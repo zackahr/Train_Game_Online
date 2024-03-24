@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../SocketContext';
-
+import './WaitingScreen.css';
 const WaitingScreen = () => {
     const [waitingMessage, setWaitingMessage] = useState('Waiting for another player...');
     const socket = useSocket();
@@ -26,7 +26,8 @@ const WaitingScreen = () => {
 
     return (
         <div className="waiting-screen">
-            <h2>{waitingMessage}</h2>
+            <h2 className="waiting-message">{waitingMessage}</h2>
+            <div className="spinner"></div>
         </div>
     );
 };

@@ -1,68 +1,91 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import p5 from 'p5';
 import { useSocket } from '../SocketContext';
+import TrainImage from '../assets/Trains/Train.png';
+import TrainFlatBed from '../assets/Trains/TrailFlatbed01.png'
+import TrainFlatBed2 from '../assets/Trains/TrailFlatbed02.png'
+import TrainFlatBed3 from '../assets/Trains/TrailFlatbed03.png'
+import BackgroundImage from '../assets/Trains/background2.jpg';
 
 const Sketch = () => {
-  const sketchH = 600;
+  const sketchH = 400;
   const sketchW = 1200;
   const pointSize = 20;
+  const trainSize = 40;
   const moveAmount = 10;
 
   const sketchRef = useRef();
   let canvas;
-  let x = (sketchW / 2) - (pointSize / 2);
+  let x = 100;
   let y = (sketchH / 2) - (pointSize / 2);
   let y2 = (sketchH / 2) - (pointSize / 2);
   let edgeTrain = sketchW - 200;
   let falling = false;
   let win = false;
   const socket = useSocket();
+  const [isFirstPlayer, setIsFirstPlayer] = useState(false);
 
   useEffect(() => {
     if (!socket) return;
 
     socket.on('moved', (newX) => {
-      console.log('Received new X position:', newX);
       x = newX;
-      console.log('New X position:', x);
+    });
+    socket.on('opponentDisconnected', () => {
+      falling = true;
+    });
+    socket.on('win', () => {
+      win = true;
+    });
+    socket.on('movedEdge', (newEdge) => {
+      edgeTrain = newEdge;
+      console.log('edgeTrain', edgeTrain);
     });
     return () => {
       socket.off('moved');
     };
   }, [socket]);
 
-
-
+  let img = '';
+  let flat = '';
+  let flat2 = '';
+  let flat3 = '';
+  let bgImage = '';
   useEffect(() => {
     const sketch = new p5((p) => {
       p.setup = () => {
-        canvas = p.createCanvas(sketchW, sketchH).style('border', '1px solid #fff');
+        bgImage = p.loadImage(BackgroundImage);
+        canvas = p.createCanvas(sketchW, sketchH).parent(sketchRef.current).style('border', '1px solid #fff');
+        sketchRef.current.style.display = 'flex';
+        sketchRef.current.style.justifyContent = 'center';
+        sketchRef.current.style.alignItems = 'center';
+      };
+
+      p.preload = () => {
+        img = p.loadImage(TrainImage);
+        flat = p.loadImage(TrainFlatBed);
+        flat2 = p.loadImage(TrainFlatBed2);
+        flat3 = p.loadImage(TrainFlatBed3);
       };
 
       p.draw = () => {
-        p.background(0);
-        p.rect(x, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize - 20, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 2 - 40, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 3 - 60, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 4 - 80, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 5 - 100, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 6 - 120, y2 - pointSize / 2, pointSize, pointSize);
-        p.rect(x - pointSize * 7 - 140, y2 - pointSize / 2, pointSize, pointSize);
+        p.image(bgImage, 0, 0, sketchW, sketchH);
+        p.image(img, x, y2 * 1.63, trainSize + 10, trainSize);
+        p.image(flat, x - trainSize * 1.5, y2 * 1.74, trainSize + 10, trainSize / 2);
+        p.image(flat2, x - trainSize * 3, y2 * 1.74, trainSize + 10, trainSize / 2);
+        p.image(flat3, x - trainSize * 4.5, y2 * 1.74, trainSize + 10, trainSize / 2);
+        p.image(flat, x - trainSize * 6, y2 * 1.74, trainSize + 10, trainSize / 2);
+        p.image(flat2, x - trainSize * 7.5, y2 * 1.74, trainSize + 10, trainSize / 2);
+        p.image(flat3, x - trainSize * 9, y2 * 1.74, trainSize + 10, trainSize / 2);
 
-        p.stroke(111);
+
+        p.stroke(0);
         p.strokeWeight(2);
         p.strokeCap(p.SQUARE);
         p.drawingContext.setLineDash([20, 20]);
-        p.line(0, y + 10, edgeTrain, y + 10);
+        p.line(0, y + 160, edgeTrain, y + 160);
 
         p.drawingContext.setLineDash([20, 0]);
-        let trainLight = x + 200;
-        p.line(x + pointSize, y, trainLight, y - pointSize * 0.8);
-        p.line(x + pointSize, y, trainLight, y - pointSize * 1.4);
-        p.line(x + pointSize, y, trainLight, y - pointSize * 2);
-        p.line(x + pointSize, y, trainLight, y - pointSize * 2.6);
-        p.line(x + pointSize, y, trainLight, y - pointSize * 3.2);
 
         if (x >= 980 && edgeTrain === 1000) {
           falling = true;
@@ -89,29 +112,44 @@ const Sketch = () => {
       };
     }, sketchRef.current);
 
+    const handleShowRulesClick = () => {
+      // Implement your logic to show the game rules here
+    };
+
+    // Create a button element
+    const button = document.createElement('button');
+    button.textContent = 'Show Rules';
+    button.style.position = 'absolute';
+    button.style.top = '10px';
+    button.style.right = '10px';
+    button.addEventListener('click', handleShowRulesClick);
+
+    // Append the button to the body
+    document.body.appendChild(button);
+
+
     return () => {
       sketch.remove();
       canvas.remove();
+      document.body.removeChild(button);
+
     };
   }, []);
-
 
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === 'ArrowRight') {
-        const newX = Math.min(x + moveAmount, sketchW - pointSize);
-        if (newX == sketchW - pointSize) {
-          win = true;
-          if (socket) socket.emit('win');
-        }
+        const move = x;
+        const endpoint = sketchW - trainSize;
+        const data = { move, endpoint };
         if (socket) {
-          socket.emit('move', newX);
+          socket.emit('move', data);
         }
-        x = newX;
-      } else if (event.key === 'ArrowUp' && edgeTrain < 1200) {
-        edgeTrain += 200;
-      } else if (event.key === 'ArrowDown' && edgeTrain > 1000) {
-        edgeTrain -= 200;
+      }
+       else if (event.key === 'ArrowUp' && edgeTrain < 1200) {
+        if (socket) {
+          socket.emit('moveEdge', edgeTrain);
+        }
       }
     };
 
@@ -122,7 +160,7 @@ const Sketch = () => {
     };
   }, [x, y, socket]);
 
-  return <div className='sketch' ref={sketchRef}></div>;
+  return <div className='sketch' ref={sketchRef} style={{ width: '100vw', height: '100vh' }}></div>;
 };
 
 export default Sketch;
