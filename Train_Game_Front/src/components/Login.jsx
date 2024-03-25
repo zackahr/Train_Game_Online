@@ -3,21 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { useSocket } from '../SocketContext';
 import game from '../assets/Trains/game.png';
+import useLocalStorage from './useLocalStorage';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const socket = useSocket();
+  const { saveUser } = useLocalStorage();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
-  
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,10 +34,14 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        socket.emit('authenticate', data);
-        console.log('Connected to server via WebSocket');
-        // Redirect to waiting screen after successful login
-        navigate('/waiting');
+        if (data) {
+          saveUser(data);
+          console.log('Connected to server via WebSocket');
+          navigate('/waiting');
+          socket.emit('authenticate', data);
+        } else {
+          console.error('Invalid user data received:', data);
+        }
       } else {
         console.error('Login failed');
       }

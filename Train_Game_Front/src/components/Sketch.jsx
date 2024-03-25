@@ -6,6 +6,7 @@ import TrainFlatBed from '../assets/Trains/TrailFlatbed01.png'
 import TrainFlatBed2 from '../assets/Trains/TrailFlatbed02.png'
 import TrainFlatBed3 from '../assets/Trains/TrailFlatbed03.png'
 import BackgroundImage from '../assets/Trains/background2.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Sketch = () => {
   const sketchH = 400;
@@ -24,6 +25,7 @@ const Sketch = () => {
   let win = false;
   const socket = useSocket();
   const [isFirstPlayer, setIsFirstPlayer] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!socket) return;
@@ -36,6 +38,11 @@ const Sketch = () => {
     });
     socket.on('win', () => {
       win = true;
+      // 3 seconds delay before redirecting to the profile page
+      setTimeout(() => {
+        navigate('/home');
+      }, 3000);
+
     });
     socket.on('movedEdge', (newEdge) => {
       edgeTrain = newEdge;
@@ -112,27 +119,10 @@ const Sketch = () => {
       };
     }, sketchRef.current);
 
-    const handleShowRulesClick = () => {
-      // Implement your logic to show the game rules here
-    };
-
-    // Create a button element
-    const button = document.createElement('button');
-    button.textContent = 'Show Rules';
-    button.style.position = 'absolute';
-    button.style.top = '10px';
-    button.style.right = '10px';
-    button.addEventListener('click', handleShowRulesClick);
-
-    // Append the button to the body
-    document.body.appendChild(button);
-
 
     return () => {
       sketch.remove();
       canvas.remove();
-      document.body.removeChild(button);
-
     };
   }, []);
 

@@ -5,7 +5,7 @@ import Sketch from './components/Sketch';
 import Login from './components/Login';
 import WaitingScreen from './components/WaitingScreen';
 import Profile from './components/Profile';
-import GameIntro from './components/GameIntro';
+import Home from './components/GameIntro';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
             <Route path="/game" element={<Sketch />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/home" element={<GameIntro />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
         </div>
       </SocketProvider>

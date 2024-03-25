@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthPayloadDto } from './dto/auth.dto';
-// import { JwtService } from '@nestjs/jwt';
+import { User } from './dto/auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 const fakeUser = [
     {
@@ -18,10 +19,13 @@ const fakeUser = [
 
 @Injectable()
 export class AuthService {
-    // constructor(private jwtService: JwtService) {}
-    validateUser({username, password}: AuthPayloadDto) {
+    constructor(private jwtService: JwtService) {}
+    validateUser({ username, password }: AuthPayloadDto) {
         const user = fakeUser.find((user) => user.username === username && user.password === password);
         return user;
     }
-    
+    findUserById({ id }: User) {
+        const user = fakeUser.find((user) => user.id === id);
+        return user;
+    }
 }

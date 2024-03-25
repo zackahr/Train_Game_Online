@@ -14,13 +14,8 @@ const WaitingScreen = () => {
             navigate('/game');
         });
 
-        socket.on('disconnect', () => {
-            setWaitingMessage('The other player disconnected. Waiting for a new player...');
-        });
-
         return () => {
             socket.off('startGame');
-            socket.off('disconnect');
         };
     }, [socket, navigate]);
 

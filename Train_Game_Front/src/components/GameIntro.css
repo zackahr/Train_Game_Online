@@ -54,3 +54,23 @@
   color: #000;
   transition: 1s;
 }
+.user-info {
+  max-width: 600px;
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #7A9D54;
+  text-align: center;
+  border: 1px solid #000;
+}
+
+.user-info h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.user-info p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}

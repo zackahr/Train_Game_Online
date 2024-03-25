@@ -5,13 +5,12 @@ const Profile = () => {
     const [playerData, setPlayerData] = useState(null);
 
     useEffect(() => {
-        // Fetch user data from the backend
         fetchUserData();
     }, []);
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch('http://localhost:3000/user/2'); // Replace '1' with the actual user ID
+            const response = await fetch('http://localhost:3000/user/'); // Replace '1' with the actual user ID
             if (response.ok) {
                 const data = await response.json();
                 console.log('User data:', data);
