@@ -85,6 +85,16 @@ The application includes a login page where you can access the main features. Pl
 
 Once logged in with one of the above user credentials, you will be able to explore the application.
 
+### Home Page
+
+![Home Page](https://github.com/zackahr/Train_Game_Online/assets/138884943/5f01a7cd-3f17-492d-9154-07c3ff4b79e0)
+
+The home page features three buttons for navigating the application:
+
+1. **Play**: Start playing the Train Game.
+2. **Player Profile**: Access your player profile.
+3. **Log Out**: Log out of the Train Game application.
+
 ## Troubleshooting
 
 - If you encounter any issues during setup or while running the application, please make sure you have followed all the steps correctly and that your system meets the prerequisites mentioned above.
