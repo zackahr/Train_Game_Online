@@ -13,6 +13,16 @@ const fakeUser = [
         id: 2,
         username: 'aymane',
         password: '123'
+    },
+    {
+        id: 3,
+        username: 'houssam',
+        password: '123'
+    },
+    {
+        id: 4,
+        username: 'amine',
+        password: '123'
     }
 
 ]

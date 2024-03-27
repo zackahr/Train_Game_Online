@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import p5 from 'p5';
 import { useSocket } from '../SocketContext';
 import TrainImage from '../assets/Trains/Train.png';
@@ -23,6 +23,7 @@ const Sketch = () => {
   let edgeTrain = sketchW - 200;
   let falling = false;
   let win = false;
+  let playerNumberOrder = 0;
   const socket = useSocket();
   const navigate = useNavigate();
 
@@ -48,6 +49,19 @@ const Sketch = () => {
       edgeTrain = newEdge;
       console.log('edgeTrain', edgeTrain);
     });
+
+    socket.on('losers', () => {
+      falling = true;
+      setTimeout(() => {
+        navigate('/home');
+      }, 3000);
+    });
+
+    socket.on('playernumber', (playerNumber) => {
+      playerNumberOrder = playerNumber;
+      console.log('playerNumber', playerNumber);
+    });
+
     return () => {
       socket.off('moved');
     };
@@ -66,6 +80,7 @@ const Sketch = () => {
         sketchRef.current.style.display = 'flex';
         sketchRef.current.style.justifyContent = 'center';
         sketchRef.current.style.alignItems = 'center';
+        
       };
 
       p.preload = () => {
@@ -95,7 +110,9 @@ const Sketch = () => {
         p.drawingContext.setLineDash([20, 0]);
 
         if (x >= 980 && edgeTrain === 1000) {
-          falling = true;
+          if (socket){
+            socket.emit('lose');
+          }
         }
 
         if (falling) {
@@ -103,12 +120,12 @@ const Sketch = () => {
           p.background(0);
           p.fill(111);
           p.textSize(50);
-          p.text('Game Overrrr', sketchW / 2 - 100, sketchH / 2);
+          p.text('Game Over', sketchW / 2 - 100, sketchH / 2);
         } if (win) {
           p.background(0);
           p.fill(111);
           p.textSize(50);
-          p.text('Both OF The Players Win', sketchW / 2.5 - 100, sketchH / 2);
+          p.text('Both Of The Players Win', sketchW / 2.5 - 100, sketchH / 2);
         }
 
         if (y > sketchH) {

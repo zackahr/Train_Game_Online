@@ -82,11 +82,20 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     }
   }
 
+  @SubscribeMessage('lose')
+  async handleLose(@ConnectedSocket() socket: Socket) {
+    this.server.emit('losers');
+    setTimeout(() => {
+      this.resetPlayers();
+    }, 3000);
+  }
   // Start the game when two players are ready
   private startGame(player1Id: number, player2Id: number) {
     if (player1Id != player2Id) {
       this.players[0].client.emit('startGame', player2Id);
       this.players[1].client.emit('startGame', player1Id);
+      this.players[0].client.emit('playernumber', player2Id);
+      this.players[1].client.emit('playernumber', player1Id);
     }
   }
 
