@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const socket = useSocket();
-  const { saveUser } = useLocalStorage();
+  const { saveUser, isLogged} = useLocalStorage();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -37,8 +37,7 @@ function Login() {
         if (data) {
           saveUser(data);
           console.log('Connected to server via WebSocket');
-          navigate('/waiting');
-          socket.emit('authenticate', data);
+          navigate('/home');
         } else {
           console.error('Invalid user data received:', data);
         }

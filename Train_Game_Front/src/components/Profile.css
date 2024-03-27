@@ -1,38 +1,58 @@
 .profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .profile-card {
-    background: #8C3333;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 3vh;;
-    /* padding: 16px; */
-    width: 50vh;
-    height: 50vh;
-  }
-  
-  .profile-picture img {
-    width: 20vh;
-    height: 20vh;
-    border-radius: 50%;
-    margin-bottom: 5vh;
-  }
-  
-  .profile-info h2 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .profile-info p {
-    margin: 5px 0;
-  }
-  
+  background: #8C3333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 3vh;
+  ;
+  width: 50vh;
+  height: 50vh;
+}
+
+.profile-picture img {
+  width: 20vh;
+  height: 20vh;
+  border-radius: 50%;
+  margin-bottom: 2vh;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.profile-info p {
+  margin: 5px 0;
+}
+
+.profile-info button {
+  background: #fff;
+  color: #8C3333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.profile-info button:hover {
+  background: #8C3333;
+  color: #fff;
+  border: 1px solid #000;
+  transition: 1s;
+}

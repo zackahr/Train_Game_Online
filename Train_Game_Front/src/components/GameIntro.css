@@ -37,20 +37,28 @@
   margin-bottom: 2vh;
 }
 
-.game-intro button {
+.button-container {
+  width: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-around;
+}
+
+.button-container button {
   padding: 12px 50px;
-  font-size: 18px;
-  background-color: #7A9D54;
+  font-size: 14px;
+  background-color: #8C3333;
   color: #fff;
   border: none;
   border-radius: 5px;
+  border: 2px solid #000;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.game-intro button:hover {
-  background-color: #557A46;
-  border: 1px solid #7A9D54;
+.button-container button:hover {
+  background-color: #7A9D54;
+  border: 1px solid #ea2828;
   color: #000;
   transition: 1s;
 }

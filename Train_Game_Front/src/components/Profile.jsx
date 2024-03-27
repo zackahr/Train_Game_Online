@@ -3,6 +3,7 @@ import './Profile.css';
 
 const Profile = () => {
     const [playerData, setPlayerData] = useState(null);
+    let userDetails = JSON.parse(localStorage.getItem('auth-user'));
 
     useEffect(() => {
         fetchUserData();
@@ -10,10 +11,9 @@ const Profile = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch('http://localhost:3000/user/'); // Replace '1' with the actual user ID
+            const response = await fetch(`http://localhost:3000/user/${userDetails.id}`);
             if (response.ok) {
                 const data = await response.json();
-                console.log('User data:', data);
                 setPlayerData(data);
             } else {
                 console.error('Failed to fetch user data:', response.statusText);
@@ -29,19 +29,20 @@ const Profile = () => {
         return <div>Loading...</div>;
     }
 
-    const { username, score, win, lose} = playerData;
+    const { username, score, win, lose, userImg } = playerData;
 
     return (
         <div className="profile-container">
             <div className="profile-card">
                 <div className="profile-picture">
-                    <img src='https://cdn.vox-cdn.com/thumbor/Kf8TBWwGCKnzuXDyPjDBgGb27cw=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/22519775/1318352350.jpg' alt="Profile" />
+                    <img src={userImg} alt="Profile" />
                 </div>
                 <div className="profile-info">
                     <h2>{username}</h2>
-                    <p>Score: {score}</p>
-                    <p>Wins: {win}</p>
-                    <p>Losses: {lose}</p>
+                    <p>S: {score}</p>
+                    <p>W: {win}</p>
+                    <p>L: {lose}</p>
+                    <button className='home-button' onClick={() => window.location.href = '/home'}>Home</button>
                 </div>
             </div>
         </div>

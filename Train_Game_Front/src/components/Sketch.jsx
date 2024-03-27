@@ -24,7 +24,6 @@ const Sketch = () => {
   let falling = false;
   let win = false;
   const socket = useSocket();
-  const [isFirstPlayer, setIsFirstPlayer] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,17 +32,18 @@ const Sketch = () => {
     socket.on('moved', (newX) => {
       x = newX;
     });
+    
     socket.on('opponentDisconnected', () => {
       falling = true;
     });
+
     socket.on('win', () => {
       win = true;
-      // 3 seconds delay before redirecting to the profile page
       setTimeout(() => {
         navigate('/home');
       }, 3000);
-
     });
+
     socket.on('movedEdge', (newEdge) => {
       edgeTrain = newEdge;
       console.log('edgeTrain', edgeTrain);
@@ -136,7 +136,7 @@ const Sketch = () => {
           socket.emit('move', data);
         }
       }
-       else if (event.key === 'ArrowUp' && edgeTrain < 1200) {
+      else if (event.key === 'ArrowUp' && edgeTrain < 1200) {
         if (socket) {
           socket.emit('moveEdge', edgeTrain);
         }

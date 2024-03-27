@@ -8,6 +8,7 @@ import Profile from './components/Profile';
 import Home from './components/GameIntro';
 
 function App() {
+
   return (
     <Router>
       <SocketProvider>

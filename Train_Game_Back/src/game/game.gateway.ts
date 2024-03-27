@@ -15,6 +15,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   private players: Player[] = [];
   private currentPlayerIndex: number = 0;
+  private currentPlayerId: number = 0;
   private resetPlayers() {
     this.players = [];
   }
@@ -22,7 +23,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   constructor(private authService: AuthService) { }
 
   async handleConnection(client: Socket) {
-    console.log(`Client connected: ${this.players}`);
+    // console.log(`Client connected: ${client}`);
   }
 
   async handleDisconnect(client: Socket) {
@@ -33,56 +34,45 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   async afterInit(server: Server) {
   }
 
-  // Authenticate the player
-  @SubscribeMessage('authenticate')
-  async handleAuthenticate(@ConnectedSocket() client: Socket, @MessageBody() authToken: { id: number, username: string, password: string }) {
-    try {
-      if (authToken) {
-        client.data.userId = authToken.id;
-        this.players.push({ id: authToken.id, client });
-        if (this.players.length === 2) {
-          this.startGame(this.players[0].id, this.players[1].id);
-        }
-      } else {
-        client.disconnect(true);
-      }
-    } catch (error) {
-      client.disconnect(true);
-    }
-  }
-
   // Handle player moves
   @SubscribeMessage('move')
-  async handleMove(@ConnectedSocket() socket: Socket,@MessageBody() data: { move: number; endpoint: number }) {
+  async handleMove(@ConnectedSocket() socket: Socket, @MessageBody() data: { move: number; endpoint: number }) {
     data.move += 10;
+    this.currentPlayerId = this.players[this.currentPlayerIndex].id;
     if (socket.data.userId === this.players[this.currentPlayerIndex].id) {
       this.server.emit('moved', data.move);
     }
     if (data.move === data.endpoint) {
       this.server.emit('win', data.move);
-      this.resetPlayers();
+      setTimeout(() => {
+        this.resetPlayers();
+      }, 3000);
     }
   }
 
   @SubscribeMessage('moveEdge')
-  async handleMoveEdge(@ConnectedSocket() socket: Socket,@MessageBody() edgeTrain: number) {
-    if (socket.data.userId === this.players[this.currentPlayerIndex].id + 1) {
-      edgeTrain =+ 1200;
-      console.log('new edge', edgeTrain);
+  async handleMoveEdge(@ConnectedSocket() socket: Socket, @MessageBody() edgeTrain: number) {
+    if (this.currentPlayerId % 2 === 1) {
+      socket.data.userId = 2;
+      edgeTrain = + 1200;
+      this.server.emit('movedEdge', edgeTrain);
+    } else if (this.currentPlayerId % 2 === 0) {
+      socket.data.userId = 1;
+      edgeTrain = + 1200;
       this.server.emit('movedEdge', edgeTrain);
     }
   }
 
   @SubscribeMessage('playagain')
   async handlePlayAgain(@ConnectedSocket() socket: Socket, @MessageBody() authToken: { id: number, username: string, password: string }) {
-    console.log(authToken);
+    // console.log(authToken);
     try {
       if (authToken) {
         socket.data.userId = authToken.id;
         this.players.push({ id: authToken.id, client: socket });
         if (this.players.length === 2) {
           this.startGame(this.players[0].id, this.players[1].id);
-          console.log('game started');
+          // console.log('game started');
         }
       } else {
         socket.disconnect(true);
