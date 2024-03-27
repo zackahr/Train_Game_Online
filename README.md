@@ -61,6 +61,30 @@ Before running the code, ensure you have the following installed:
 
 You can access the Train Game application at [http://localhost:5173/login](http://localhost:5173/login).
 
+### Login Page
+
+![Login Page](https://github.com/zackahr/Train_Game_Online/assets/138884943/53260413-383e-4806-8a31-c4367fce9a66)
+
+The application includes a login page where you can access the main features. Please note that this login page is for demonstration purposes only and has predefined fake user credentials:
+
+- **User 1:**
+  - Username: zakariae
+  - Password: 123
+
+- **User 2:**
+  - Username: aymane
+  - Password: 123
+
+- **User 3:**
+  - Username: hossame
+  - Password: 123
+
+- **User 4:**
+  - Username: amine
+  - Password: 123
+
+Once logged in with one of the above user credentials, you will be able to explore the application.
+
 ## Troubleshooting
 
 - If you encounter any issues during setup or while running the application, please make sure you have followed all the steps correctly and that your system meets the prerequisites mentioned above.
