@@ -3,6 +3,23 @@
 # Train Game
 
 Welcome to the Train Game project! This repository contains both the backend and frontend code for the Train Game application.
+This project utilizes a combination of technologies to create an interactive multiplayer game experience.
+
+## Frontend
+- **React.js**: Used for building the user interface and handling client-side interactions.
+  
+## Backend
+- **NestJS**: Employed as the backend framework for building scalable and efficient server-side applications.
+- **Socket.IO**: Implemented to facilitate real-time bidirectional communication between players, enabling matchmaking and gameplay synchronization.
+
+## Overview
+In this project, players are seamlessly connected through the integration of React.js for the frontend and NestJS for the backend. The Socket.IO library is leveraged to establish robust connections between players, facilitating real-time communication essential for matchmaking and gameplay synchronization.
+
+### Matchmaking System
+Players are placed in a queue upon entering the game, awaiting the arrival of another player. Once a sufficient number of players are queued, the matchmaking system pairs them together, establishing a connection for an immersive gaming experience.
+
+### Gameplay
+Upon successful matchmaking, players engage in gameplay where their actions are instantly relayed to each other through Socket.IO, ensuring a synchronized and seamless gaming experience. As players progress through the game, their scores and game state are efficiently managed by the NestJS backend, providing a smooth and responsive gaming environment.
 
 ## Prerequisites
 
