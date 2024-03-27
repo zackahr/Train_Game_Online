@@ -59,7 +59,7 @@ Before running the code, ensure you have the following installed:
 
 ## Usage
 
-Once both the backend and frontend servers are running, you can access the Train Game application at [http://localhost:3000](http://localhost:3000).
+You can access the Train Game application at [http://localhost:5173/login](http://localhost:5173/login).
 
 ## Troubleshooting
 
@@ -67,4 +67,4 @@ Once both the backend and frontend servers are running, you can access the Train
 
 - For further assistance, feel free to open an issue on this repository.
 
-Happy coding!
+Enjoy The Game!
