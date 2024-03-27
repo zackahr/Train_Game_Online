@@ -95,6 +95,14 @@ The home page features three buttons for navigating the application and on top o
 2. **Player Profile**: Access your player profile.
 3. **Log Out**: Log out of the Train Game application.
 
+### Game Page
+
+![Game Page](https://github.com/zackahr/Train_Game_Online/assets/138884943/c2918e81-0b30-4ee0-807f-3f7822fb5f08)
+
+In the game page:
+- If you are Player 1, you will be responsible for moving the train using the right arrow (➡️) icon.
+- If you are Player 2, you will be responsible for adding the bridge that are not missed using the up arrow (⬆️) icon.
+
 ## Troubleshooting
 
 - If you encounter any issues during setup or while running the application, please make sure you have followed all the steps correctly and that your system meets the prerequisites mentioned above.
