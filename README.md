@@ -89,7 +89,7 @@ Once logged in with one of the above user credentials, you will be able to explo
 
 ![Home Page](https://github.com/zackahr/Train_Game_Online/assets/138884943/5f01a7cd-3f17-492d-9154-07c3ff4b79e0)
 
-The home page features three buttons for navigating the application:
+The home page features three buttons for navigating the application and on top of them there's game rule description:
 
 1. **Play**: Start playing the Train Game.
 2. **Player Profile**: Access your player profile.
