@@ -103,6 +103,14 @@ In the game page:
 - If you are Player 1, you will be responsible for moving the train using the right arrow (➡️) icon.
 - If you are Player 2, you will be responsible for adding the bridge that are not missed using the up arrow (⬆️) icon.
 
+### Player Profile Page
+
+![Player Profile Page](https://github.com/zackahr/Train_Game_Online/assets/138884943/013403fb-b43c-4cb2-8a31-683ccfce169e)
+
+In the Player Profile Page
+
+This page has player info like win, lose and score
+
 ## Troubleshooting
 
 - If you encounter any issues during setup or while running the application, please make sure you have followed all the steps correctly and that your system meets the prerequisites mentioned above.
