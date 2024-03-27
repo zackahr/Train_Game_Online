@@ -7,6 +7,7 @@ import TrainFlatBed2 from '../assets/Trains/TrailFlatbed02.png'
 import TrainFlatBed3 from '../assets/Trains/TrailFlatbed03.png'
 import BackgroundImage from '../assets/Trains/background2.jpg';
 import { useNavigate } from 'react-router-dom';
+import { sendWinPostRequest, sendLosePostRequest } from './services';
 
 const Sketch = () => {
   const sketchH = 400;
@@ -23,7 +24,6 @@ const Sketch = () => {
   let edgeTrain = sketchW - 200;
   let falling = false;
   let win = false;
-  let playerNumberOrder = 0;
   const socket = useSocket();
   const navigate = useNavigate();
 
@@ -33,13 +33,10 @@ const Sketch = () => {
     socket.on('moved', (newX) => {
       x = newX;
     });
-    
-    socket.on('opponentDisconnected', () => {
-      falling = true;
-    });
 
     socket.on('win', () => {
       win = true;
+      sendWinPostRequest();
       setTimeout(() => {
         navigate('/home');
       }, 3000);
@@ -55,15 +52,14 @@ const Sketch = () => {
       setTimeout(() => {
         navigate('/home');
       }, 3000);
-    });
-
-    socket.on('playernumber', (playerNumber) => {
-      playerNumberOrder = playerNumber;
-      console.log('playerNumber', playerNumber);
+      sendLosePostRequest();
     });
 
     return () => {
       socket.off('moved');
+      socket.off('win');
+      socket.off('movedEdge');
+      socket.off('losers');
     };
   }, [socket]);
 
@@ -80,7 +76,7 @@ const Sketch = () => {
         sketchRef.current.style.display = 'flex';
         sketchRef.current.style.justifyContent = 'center';
         sketchRef.current.style.alignItems = 'center';
-        
+
       };
 
       p.preload = () => {
@@ -110,7 +106,7 @@ const Sketch = () => {
         p.drawingContext.setLineDash([20, 0]);
 
         if (x >= 980 && edgeTrain === 1000) {
-          if (socket){
+          if (socket) {
             socket.emit('lose');
           }
         }

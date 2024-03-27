@@ -15,6 +15,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   private players: Player[] = [];
   private currentPlayerIndex: number = 0;
+  private gameEnded: boolean = false;
   private currentPlayerId: number = 0;
   private resetPlayers() {
     this.players = [];
@@ -84,10 +85,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage('lose')
   async handleLose(@ConnectedSocket() socket: Socket) {
-    this.server.emit('losers');
-    setTimeout(() => {
-      this.resetPlayers();
-    }, 3000);
+    if (!this.gameEnded) {
+      this.server.emit('losers');
+      this.gameEnded = true; 
+      setTimeout(() => {
+        this.resetPlayers();
+      }, 3000);
+    }
   }
   // Start the game when two players are ready
   private startGame(player1Id: number, player2Id: number) {

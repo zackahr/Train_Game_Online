@@ -45,5 +45,24 @@ export class UserService {
         }
         return user;
     }
+
+    updateUserWin(userId: number): UserDto {
+        const userIndex = fakeUser.findIndex(user => user.id === userId);
+        console.log('updated win', fakeUser[userIndex]);
+        if (userIndex !== -1) {
+            fakeUser[userIndex].win++;
+            fakeUser[userIndex].score++;
+        }
+        return fakeUser[userIndex];
+    }
+
+    updateUserLose(userId: number): UserDto {
+        const userIndex = fakeUser.findIndex(user => user.id === userId);
+        console.log('updated lose', fakeUser[userIndex].lose);
+        if (userIndex !== -1) {
+            fakeUser[userIndex].lose++;
+        }
+        return fakeUser[userIndex];
+    }
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Post, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 
@@ -8,10 +8,19 @@ export class UserController {
 
     @Get(':id')
     getUserData(@Param('id') id: string): UserDto {
-        const userId = parseInt(id); // Parse the ID string to a number
+        const userId = parseInt(id);
         return this.userService.getUserData(userId);
     }
-    
 
-    // Other API endpoints for managing user data
+    @Post('win/:id')
+    handleWin(@Param('id') id: string): UserDto {
+        const userId = parseInt(id);
+        return this.userService.updateUserWin(userId);
+    }
+
+    @Post('lose/:id')
+    handleLose(@Param('id') id: string): UserDto {
+        const userId = parseInt(id);
+        return this.userService.updateUserLose(userId);
+    }
 }

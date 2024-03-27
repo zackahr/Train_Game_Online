@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const socket = useSocket();
-  const { saveUser, isLogged} = useLocalStorage();
+  const { saveUser} = useLocalStorage();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
